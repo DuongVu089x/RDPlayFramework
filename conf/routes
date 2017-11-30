@@ -1,0 +1,40 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET		/login								controllers.ApplicationController.login()
+POST	/login								controllers.ApplicationController.authenticate()
+GET		/logout								controllers.ApplicationController.logout()
+
+GET     /user/:username                     controllers.UserController.index(username: String)
+POST    /user/changeAvatar                  controllers.UserController.changeAvatar()
+POST	/user/updateInfo					controllers.UserController.updateInfo()
+
+GET     /student                          	controllers.StudentController.index()
+GET     /student/                  			controllers.StudentController.index()
+GET		/student/edit/:id					controllers.StudentController.getStudentById(id: Integer)
+POST	/student/update						controllers.StudentController.updateStudent()
+GET		/student/insert						controllers.StudentController.insertStudent()
+POST	/student/insert						controllers.StudentController.insertStudentPost()
+GET		/student/delete/:id					controllers.StudentController.deleteStudent(id: Integer)
+
+GET		/class								controllers.ClassController.index()
+GET		/class/								controllers.ClassController.index()
+GET		/class/edit/:id						controllers.ClassController.getClassById(id: Integer)
+POST	/class/update						controllers.ClassController.updateClass()
+GET		/class/insert						controllers.ClassController.insertClass()
+POST	/class/insert						controllers.ClassController.insertClassPost()
+GET		/class/delete/:id					controllers.ClassController.deleteClass(id: Integer)
+
+GET		/api/class/getClassByPageAndKeyword	controllers.ClassController.getClassByPageAndKeyword()
+GET		/api/class/demo						controllers.ClassController.demo()
+
+GET		/demo/index							controllers.StreamDemoController.index()
+GET		/demo/stream						controllers.StreamDemoController.demo()
+GET		/demo/indexComet					controllers.StreamDemoController.indexComet()
+
+GET		/api/student/getStudentByKeyword	controllers.StudentApiController.getStudentByKeyword()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               		controllers.Assets.versioned(path="/public", file: Asset)

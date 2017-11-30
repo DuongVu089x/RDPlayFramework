@@ -1,0 +1,87 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>@title</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
+	<link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+</head>
+<body>
+	<div class="header">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="@routes.StudentController.index">WebSiteName</a>
+				@if(session.get("username")){
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="@routes.UserController.index(session.get("username"))">@session.get("username")</a></li>
+						<li><a href="@routes.StudentController.index">Student</a></li>
+						<li><a href="@routes.ClassController.index">Class</a></li>
+						<li><a href="@routes.ApplicationController.logout">Logout</a></li>
+					</ul>
+				}
+			</div>
+		</nav>
+	</div>
+	@content
+	<footer id="myFooter">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3 myCols">
+					<h5>Get started</h5>
+					<ul>
+						<li><a href="/student/" target="_blank">Home</a></li>
+						<li><a href="/login/" target="_blank">Sign up</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-3 myCols">
+					<h5>About us</h5>
+					<ul>
+						<li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+						<li><a href="https://www.linkedin.com/feed/" target="_blank">Linkedin</a></li>
+						<li><a href="#">Reviews</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-3 myCols">
+					<h5>Support</h5>
+					<ul>
+						<li><a href="https://duongvu089x.github.io/" target="_blank">GitHub</a></li>
+						<li><a
+							href="https://drive.google.com/open?id=0B92EmFc7biHeQ2pMSVhsNHpsRkE"
+							target="_blank">Drive</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-3 myCols">
+					<h5>Legal</h5>
+					<ul>
+						<li><a href="#">Terms of Service</a></li>
+						<li><a href="#">Terms of Use</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="social-networks">
+			<a href="#" class="twitter"><i class="fa fa-twitter"></i></a> <a
+				href="#" class="facebook"><i class="fa fa-facebook-official"></i></a>
+			<a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+		</div>
+		<div class="footer-copyright">
+			<p>© 2016 Copyright Text</p>
+		</div>
+	</footer>
+	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="@routes.Assets.versioned("javascripts/hello.js")" type="text/javascript"></script>
+	@if(request.uri.contains("class")){
+		<script src="@routes.Assets.versioned("javascripts/clazz.js")" type="text/javascript"></script>
+	}
+</body>
+</html>

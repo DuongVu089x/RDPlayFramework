@@ -1,0 +1,89 @@
+@import entities.Clazz
+@import play.api.mvc.Session
+
+@(classes: List[Clazz], total: Integer, currentPage: Integer, keyword: String) @main("Welcome to Play") {
+<img id="loading" src="@routes.Assets.versioned("images/loading.gif")">
+<div class="class-content">
+	<div class="container">
+		<h2 class="text-center">QUẢN LÝ LỚP HỌC</h2>
+		@if(flash.containsKey("message")){
+			<div class="alert alert-success col-sm-push-2">
+				<a class="close" data-dismiss="alert">x</a> 
+				<strong>@flash.get("message")</strong>
+			</div>
+		}
+		<div class="row">
+			
+			<div class="col-md-6">
+				@if(session.get("role") != "USER"){
+					<a class="btn btn-success" href="@routes.ClassController.insertClass()">Insert</a>
+				}
+			</div>
+			
+			<div class="input-group col-md-6">
+				<input type="text" id="search" class="form-control"
+					placeholder="Name, Code, Address, Name of class" value="@keyword"
+					onkeyup="searchClassAjax()" /> <span class="input-group-btn">
+					<a class="btn btn-info"> <i class="glyphicon glyphicon-search"></i>
+				</a>
+				</span>
+			</div>
+			<div class="search-result col-md-5 col-md-push-6">
+				<table id="data-student" class="table table-hover">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Code</th>
+							<th>Address</th>
+						</tr>
+					</thead>
+					<tbody id="search-result">
+					</tbody>
+				</table>
+				<p class="text-center">
+					<a href="#" onclick="viewMoreResult(event)">Xem thêm</a>
+				</p>
+			</div>
+		</div>
+		<!-- Nav tabs -->
+		<div class="row">
+			<table id="data-student" class="table table-hover page">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						@if(session.get("role") != "USER"){
+							<th>Action</th>
+						}
+					</tr>
+				</thead>
+				<tbody>
+					@for(clazz<- classes){
+					<tr>
+						<td>@clazz.getId()</td>
+						<td class="text">@clazz.getName()</td>
+						@if(session.get("role") != "USER"){
+							<td>
+								<a class='btn btn-success' href="@routes.ClassController.getClassById(clazz.getId())">Edit</a>
+								@if(session.get("role") == "ADMIN"){
+									<a class='btn btn-danger' href="@routes.ClassController.deleteClass(clazz.getId())">Delete</a>
+								}
+							</td>
+						}
+					</tr>
+					}
+				</tbody>
+			</table>
+			<ul class="pagination col-sm-4 col-sm-push-4">
+				@for(index <- 0 until total){
+					@if(index + 1 == currentPage){
+						<li class="active"><a href='/class?page=@{index+1}&keyword=@keyword'>@{index+1}</a></li>
+					} else {
+						<li><a href='/class?page=@{index+1}&keyword=@keyword'>@{index+1}</a></li>
+					}
+				}
+			</ul>
+		</div>
+	</div>
+</div>
+}

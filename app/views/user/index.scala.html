@@ -1,0 +1,134 @@
+@import bean.UpdateInfoFormBean
+
+
+@(form: Form[UpdateInfoFormBean], imgPath: String) @main("Welcome to Play") {
+<div class="user-content">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 form form-default">
+			<div class="panel-body">
+						@helper.form(routes.UserController.updateInfo) {
+							@if(form.hasErrors) {
+							        @if(form.errors.size() > 0) {
+							            @for((key, value) <- form.errors) {
+							            	<div class="alert alert-danger col-sm-push-2">
+							            		 <a class="close" data-dismiss="alert">x</a>
+							            		 <strong> @key.toString() : </strong>
+								                    @for(err <- value) {
+														  @err.message().toString()
+								                    }
+							               </div>
+							            }
+							        } else {No error returned.}
+							}
+							@if(flash.containsKey("error")){
+								<div class="alert alert-danger col-sm-push-2">
+									<a class="close" data-dismiss="alert">x</a> 
+									<strong>@flash.get("error")</strong>
+								</div>
+								
+							}
+							@if(flash.containsKey("success")){
+								<div class="alert alert-success col-sm-push-2">
+									<a class="close" data-dismiss="alert">x</a> 
+									<strong>@flash.get("success")</strong>
+								</div>
+								
+							}
+							@helper.CSRF.formField
+							<fieldset>
+								<div class="row">
+									<div class="col-sm-12 col-md-10  col-md-offset-1 ">
+										<div class="form-group">
+											<div class="input-group">
+												<span class="input-group-addon"> 
+													<i class="glyphicon glyphicon-user"></i>
+												</span> 
+												<input type="text" class="form-control" placeholder="Username" name="@{form("username").label}" id="@{form("username").id}" value="@{form("username").value}" readonly="readonly">
+											</div>
+											<div class="error" id="error-username"></div>
+										</div>
+										<div class="form-group">
+											<div class="input-group">
+												<span class="input-group-addon"> 
+													<i class="glyphicon glyphicon-lock"></i>
+												</span> 
+												<input class="form-control" placeholder="Password" name="@{form("password").label}" type="password" id="@{form("password").id}">
+											</div>
+											<div class="error" id="error-password"></div>
+										</div>
+										<div class="form-group">
+											<div class="input-group">
+												<span class="input-group-addon"> 
+													<i class="glyphicon glyphicon-lock"></i>
+												</span> 
+												<input class="form-control" placeholder="Password" name="@{form("confirmPassword").label}" type="password" id="@{form("confirmPassword").id}">
+											</div>
+											<div class="error" id="error-confirmPassword"></div>
+										</div>
+										<div class="form-group">
+											<input type="submit" class="btn btn-lg btn-primary btn-block" value="Update Info">
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						}
+					</div>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<strong>Upload files</strong> <small> </small>
+					</div>
+					<div class="panel-body">
+						<form action="@routes.UserController.changeAvatar()"
+							enctype="multipart/form-data" method="POST">
+							<div class="input-group image-preview">
+								@helper.CSRF.formField 
+								<input placeholder="" type="text" class="form-control image-preview-filename" disabled="disabled">
+								<span class="input-group-btn"> <!-- image-preview-clear button -->
+									<button type="button"
+										class="btn btn-default image-preview-clear"
+										style="display: none;">
+										<span class="glyphicon glyphicon-remove"></span> Clear
+									</button> <!-- image-preview-input -->
+									<div class="btn btn-default image-preview-input">
+										<span class="glyphicon glyphicon-folder-open"></span> 
+										<span class="image-preview-input-title">Browse</span> 
+										<input type="file" accept="image/png, image/jpeg, image/gif"
+											name="picture" id="imgInp" />
+										<!-- rename it -->
+									</div>
+									<button type="submit" class="btn btn-labeled btn-primary">
+										<span class="btn-label">
+											<i class="glyphicon glyphicon-upload"></i> 
+										</span>
+										Upload
+									</button>
+								</span>
+							</div>
+						</form>
+						@if(flash.containsKey("successImage")){
+							<div class="alert alert-success col-sm-push-2">
+								<a class="close" data-dismiss="alert">x</a> 
+								<strong>@flash.get("successImage")</strong>
+							</div>
+						} else if(flash.containsKey("errorImage")){
+							<div class="alert alert-danger col-sm-push-2">
+								<a class="close" data-dismiss="alert">x</a> 
+								<strong>@flash.get("errorImage")</strong>
+							</div>
+						}
+						
+						@if(flash.containsKey("img")){
+							<img id="blah" src="@routes.Assets.versioned("images/avatars")/@flash.get("img")" />
+						}else {
+							<img id="blah" src="@routes.Assets.versioned("images/avatars")/@imgPath" alt="Choose your images" />
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+}

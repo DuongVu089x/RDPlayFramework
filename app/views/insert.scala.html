@@ -1,0 +1,82 @@
+@import entities.Student
+@import entities.Clazz
+
+@(form: Form[Student], allClasses: List[Clazz]) @main("Welcome to Play") {
+<img id="loading" src="/views/images/loading.gif">
+<div class="student-content">
+	<div class="container">
+		<h2 class="text-center">QUẢN LÝ HỌC SINH</h2>
+		<div class="row">
+			<form class="form-horizontal" action="@routes.StudentController.insertStudentPost()" method="POST">
+				@if(form.hasErrors) {
+				        @if(form.errors.size() > 0) {
+				            @for((key, value) <- form.errors) {
+				            	<div class="alert alert-danger col-sm-push-2">
+				            		 <a class="close" data-dismiss="alert">x</a>
+				            		 <strong> @key.toString() : </strong>
+					                    @for(err <- value) {
+											  @err.message().toString()
+					                    }
+				               </div>
+				            }
+				        } else {No error returned.}
+				}
+				@helper.CSRF.formField
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="name">Name:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="@{form("name").id}" name="@{form("name").label}" value="@{form("name").value}" placeholder="Enter name">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="code">Code:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="@{form("code").id}" name="@{form("code").label}" 
+							value="@{form("code").value}" placeholder="Enter code">
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="address">Address:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="@{form("address").id}" name="@{form("address").label}" 
+							value="@{form("address").value}" placeholder="Enter address">
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="averageScore">Average Score:</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control" id="@{form("averageScore").id}" name="@{form("averageScore").label}" 
+							value="@{form("averageScore").value}" placeholder="Enter Average Score">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<label class="checkbox-inline">
+							<input type="radio" name="@form("isActive").name" value="1">
+							Active
+						</label> <label class="checkbox-inline">
+							<input type="radio" name="@form("isActive").name" value="0">Inactive
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						@for(clazz <- allClasses) {
+							<label class="checkbox-inline">
+								<input type="checkbox" id="@clazz.getId()" value="@clazz.getId()" name="classId">@clazz.getName()
+							</label>
+						}
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">Update</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+}
